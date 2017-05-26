@@ -1,7 +1,7 @@
 {
-  "name": "sls-spring-fw",
+  "name": "sls-api-decorators",
   "version": "0.0.0",
-  "description": "sls-spring-fw",
+  "description": "serveless plugin to write lambda functions in typescript making use of IoC technics to reduce coding effort",
   "license": "MIT",
   "repository": "",
   "author": "",

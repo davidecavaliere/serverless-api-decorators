@@ -1,5 +1,4 @@
 import * as Debug from 'debug';
-import * as Reflect from 'reflect-metadata';
 
 const debug = Debug('annotations');
 
@@ -47,9 +46,11 @@ export const Endpoint = (config: Object) => {
     debug('-----------------parent proto------------');
     debug(Object.getOwnPropertyNames(target.constructor.prototype));
 
-    let targetProto = target.constructor.prototype;
+    const targetProto = target.constructor.prototype;
 
-    if (!targetProto.endpoints) targetProto['endpoints'] = [];
+    if (!targetProto.endpoints) {
+      targetProto['endpoints'] = [];
+    }
 
     // setting real function name
     (config as any)['functionName'] = key

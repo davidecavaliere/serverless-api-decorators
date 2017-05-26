@@ -6,6 +6,6 @@ const expect = chai.expect;
 
 describe("index", () => {
   it("should provide Greeter", () => {
-    expect(index.Greeter).to.not.be.undefined;
+    expect(index).to.not.be.undefined;
   });
 });
