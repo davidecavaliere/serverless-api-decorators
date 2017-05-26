@@ -1,45 +1,94 @@
-import  * as Debug  from "debug";
+import * as Debug from 'debug';
+import * as Reflect from 'reflect-metadata';
 
-const debug = Debug('bazooka');
+const debug = Debug('annotations');
 
-export const AnnotationFactory = (prop: any) => {
-
-
-  debug('Creating class annotation', prop);
-  return Annotation;
-}
-
-export const Annotation = (target: any) => {
-  debug('Running class annotation');
-  debug(target);
+export interface ServiceConfiguration {
+  name: string;
+  path: string;
+  xOrigin: boolean;
 };
 
-export const FunctionAnn = (prop: any) => {
+export const Service = (config: Object) => {
+
+
+  debug('Creating class annotation');
+  debug(config);
+  return (target: any) => {
+    debug('Running class annotation');
+    debug('adding config', Object.keys(config));
+
+    target.prototype.service = config;
+
+    debug('adding handler for register endpoint', this);
+
+    target.prototype.registerEndpoint = (conf: Object) => {
+      debug('registering endpoint', conf);
+    };
+
+    debug('target prototype', target.prototype);
+
+
+  };
+}
+
+
+export const Endpoint = (config: Object) => {
   debug('Creating function annotatiion');
-  debug(prop);
+  debug(config);
 
   return function(target: any, key: string, descriptor: PropertyDescriptor) {
+    // let functName = target;
+
+    debug('function name:', key);
+
     debug('Running function annotation');
-    debug('target', target);
-    debug('key', key);
-    debug('descriptor', descriptor);
+    // debug('target space:', functName);
+    debug('-----------------parent proto------------');
+    debug(Object.getOwnPropertyNames(target.constructor.prototype));
 
-    let originalFunction = target[key];
+    let targetProto = target.constructor.prototype;
 
-    return target[key] = (...args) => {
+    if (!targetProto.endpoints) targetProto['endpoints'] = [];
+
+    // setting real function name
+    (config as any)['functionName'] = key
+
+    target.constructor.prototype.endpoints.push(config);
+
+    debug('endpoint defined', target.constructor.prototype);
+
+    // debug('target constructor: ', target.constructor);
+    // debug('keys:', Object.keys(target));
+    // debug('key', key);
+    // debug('descriptor', descriptor);
+
+    // debug('config added', Object.keys(config));
+
+    // Object.defineProperty(target, (config as any)['name'] + '-config', {
+    //   value: config,
+    //   writable: true,
+    //   enumerable: true,
+    //   configurable: true
+    // });
+
+
+    const originalFunction = target[key];
+
+    return target[key] = (...args: any[]) => {
       debug('hijacked function');
       debug('event', args[0]);
-      let event = args[0];
+      const event = args[0];
       debug('context', args[1]);
       // debug('cb', args[2])
-      let cb = args[2];
+      const cb = args[2];
       // function should only handle the event and resolve, reject of a promise
-      let promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
         debug('promising sanitation');
         try {
-          let response = originalFunction.call(target, event);
+          const response = originalFunction.call(target, event);
           resolve(response);
-        } catch(e) {
+        } catch (e) {
           debug('error calling handler', e.toString());
 
           // in development mode we always want to resolve
