@@ -22,7 +22,9 @@
     "watch": "npm run build -- --watch",
     "watch:test": "npm run test -- --watch"
   },
-  "dependencies": {},
+  "dependencies": {
+    "debug": "^2.6.8"
+  },
   "peerDependencies": {
     "ts-node": "^3.0.0",
     "tslint": "^5.0.0",
