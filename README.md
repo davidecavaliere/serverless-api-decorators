@@ -2,9 +2,27 @@
 [![Build Status](https://travis-ci.org/davidecavaliere/serverless-api-decorators.svg?branch=master)](https://travis-ci.org/davidecavaliere/serverless-api-decorators)[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 [![Coverage Status](https://coveralls.io/repos/github/{{github-user-name}}/{{github-app-name}}/badge.svg?branch=master)](https://coveralls.io/github/{{github-user-name}}/{{github-app-name}}?branch=master)
 
-Supports only aws lambdas.
+sls-api-decorator is a PoC on using typescript decorators to decorate classes that rapresents a service (in serverless idiom) and their methods that will map to endpoints. It supports only aws lambdas.
 
-# Preliminary Setup
+It basically allow the developer to define a set of aws lambda functions as methods of the same class.
+
+```typescript
+
+
+@Service()
+export class MyService {
+  
+  @Endpoint()
+  public sayHello(event) {
+    return { message : 'Hello there'}
+  }
+}
+
+```
+
+`sayHello` function is wrapped in a promise and will automatically handle thrown errors.
+
+# How to use
 
 ####Create a serverless project
 
@@ -87,6 +105,11 @@ add npm scripts
 ```npm i -S sls-api-decorators```
 
 create `api/user/user.service.ts`
+The following will define a service with base path users that will expose two endpoints:
+- users/
+- users/error
+
+The latter being to demostrate error throwing.
 
 ```typescript
 // user.service.ts
@@ -138,6 +161,8 @@ import  * as Debug  from "debug";
 ```
 
 create `api/index.ts`
+
+The following will expose the service to be used by serverless
 
 ```typescript
 // api/index.ts
@@ -192,3 +217,5 @@ functions:
 ```
 
 run `npm start` sit back and start coding :)
+
+The above configuration will be automatically generated using another serverless plugin soon to be realeased.
