@@ -13,7 +13,7 @@ Supports only aws lambdas.
 
 - specify your service name and comment out `functions` section
 
-####serverless-webpack plugin
+####Install serverless-webpack plugin
 
 - `npm i -S serverless-webpack`
 
@@ -83,7 +83,7 @@ add npm scripts
   } 
 ```
 
-install sls-api-decorators
+####Install sls-api-decorators
 
 ```npm i -S sls-api-decorators```
 
