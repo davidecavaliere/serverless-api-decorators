@@ -23,6 +23,11 @@
     "watch:test": "npm run test -- --watch"
   },
   "dependencies": {},
+  "peerDependencies": {
+    "ts-node": "^3.0.0",
+    "tslint": "^5.0.0",
+    "typescript": "^2.0.0"
+  },
   "devDependencies": {
     "@types/chai": "^3.0.0",
     "@types/mocha": "^2.0.0",
