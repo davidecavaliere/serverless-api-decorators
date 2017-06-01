@@ -1,30 +1,33 @@
 # Serverless api decorators
 [![Build Status](https://travis-ci.org/davidecavaliere/serverless-api-decorators.svg?branch=master)](https://travis-ci.org/davidecavaliere/serverless-api-decorators)[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
-[![Coverage Status](https://coveralls.io/repos/github/{{github-user-name}}/{{github-app-name}}/badge.svg?branch=master)](https://coveralls.io/github/{{github-user-name}}/{{github-app-name}}?branch=master)
+
 
 sls-api-decorator is a PoC on using typescript decorators to decorate classes that rapresents a service (in serverless idiom) and their methods that will map to endpoints. It supports only aws lambdas.
 
 It basically allow the developer to define a set of aws lambda functions as methods of the same class.
 
+Loading the sls-api-decorators plugin will automatically generate the lambda definitions in serverless.yaml
+
 ```typescript
-
-
 @Service()
 export class MyService {
-  
+
   @Endpoint()
   public sayHello(event) {
     return { message : 'Hello there'}
   }
 }
-
 ```
 
 `sayHello` function is wrapped in a promise and will automatically handle thrown errors.
 
 # How to use
+<!--
+For a quick start clone [http://github.com/davidecavaliere/sls-api-decorator-example](http://github.com/davidecavaliere/sls-api-decorator-example)
 
-####Create a serverless project
+check out git's history with `git log -p --reverse`. -->
+
+#### Create a serverless project
 
 ``sls create -t aws-nodejs``
 
@@ -43,6 +46,9 @@ set up to run with typescript
 ```yaml
 plugins:
   - serverless-webpack
+  # also add the sls-api-decorators plugin
+  # this will avoi you to manually set the functions in serverless.yaml
+  - sls-api-decorators
 ```
 create webpack.config.js
 
@@ -69,13 +75,11 @@ module.exports = {
     extensions: ['.ts', '.js', '.tsx', '.jsx', '']
   },
 };
-
 ```
 
 create tsconfig.json
 
 ```js
-
 {
   "compilerOptions": {
     "target": "es2015",
@@ -97,14 +101,15 @@ add npm scripts
   "scripts": {
     "start": "npm run webpack",
     "webpack": "sls webpack serve'"
-  } 
+  }
 ```
 
-####Install sls-api-decorators
+#### Install sls-api-decorators
 
 ```npm i -S sls-api-decorators```
 
 create `api/user/user.service.ts`
+
 The following will define a service with base path users that will expose two endpoints:
 - users/
 - users/error
@@ -116,35 +121,44 @@ The latter being to demostrate error throwing.
 
 import  * as Debug  from "debug";
    import {Service, Endpoint} from "sls-api-decorators";
-   
-   
+
+
    const debug = Debug('bazooka');
-   
-   
+
+
    @Service({
+     // name of the service (not in the serverless meaning of service)
+     // will be used in the future for di purpose
      name: 'userService',
+     // this will rapresent the base path for this service
+     // i.e.: http://localhost:8000/users
      path: 'users',
+     // Allow xOrigin request [TBD]
      xOrigin: true
    })
    class UserService {
-     constructor() {
-   
-       debug('Initing UserService');
-     }
-   
+     constructor() { }
+
      @Endpoint({
+       // name to reference this method in the serverless ecosystem
+       // i.e.: to be used with invoke command
        name: 'hello',
+       // sub-path for this endpoint
+       // i.e.: http://localhost:8000/users/
        path: '/',
+       // method to which this function should listen
+       // i.e.: 'get' or ['get', 'post'] [TBD]
        method: 'get',
+       // this is just required from serverless-webpack plugin
        integration: 'lambda'
      })
      public welcome(event) {
        debug('Running welcome');
-   
+
        return { message: 'Go Serverless Webpack (Typescript) v1.0! Your function executed successfully!', event };
-   
+
      }
-   
+
      @Endpoint({
        name: 'error',
        path: 'error',
@@ -153,10 +167,11 @@ import  * as Debug  from "debug";
      })
      public error(event) {
        debug('throwing an error');
+       // throwing an error will reject the lambda cb
        throw new Error('something weird just happened');
      }
    }
-   
+
    export { UserService };
 ```
 
@@ -164,8 +179,12 @@ create `api/index.ts`
 
 The following will expose the service to be used by serverless
 
+_this should be replaced in future versions by a DI system_
+
 ```typescript
 // api/index.ts
+
+
 
 import  * as Debug  from 'debug';
 
@@ -191,31 +210,4 @@ debug('services:', services);
 export { services };
 ```
 
-define your functions in `serverless.yaml`
-
-```yaml
-functions: 
-  hello: 
-    handler: index.services.userService.welcome 
- 
-#    The following are a few example events you can configure 
-#    NOTE: Please make sure to change your handler code to work with those events 
-#    Check the event documentation for details 
-    events: 
-      - http: 
-          path: users 
-          method: get 
-          integration: lambda 
-  error: 
-    handler: index.services.userService.error 
-    events:  
-      - http: 
-          path: users/error 
-          method: get 
-          integration: lambda 
-
-```
-
 run `npm start` sit back and start coding :)
-
-The above configuration will be automatically generated using another serverless plugin soon to be realeased.
