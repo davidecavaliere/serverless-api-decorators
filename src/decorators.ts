@@ -2,8 +2,8 @@ import * as Debug from 'debug';
 
 const debug = Debug('annotations');
 
-export const ServiceSym = Symbol('Service');
-export const EndpointsSym = Symbol('Endpoints');
+export const ServiceSym = 'Service';
+export const EndpointsSym = 'Endpoints';
 
 export interface ServiceConfiguration {
   name: string;
@@ -15,20 +15,12 @@ export const Service = (config: Object) => {
 
 
   debug('Creating class annotation');
-  debug(config);
   return (target: any) => {
     debug('Running class annotation');
-    debug('adding config', Object.keys(config));
 
     target.prototype[ServiceSym] = config;
 
-    debug('adding handler for register endpoint', this);
-
-    target.prototype.registerEndpoint = (conf: Object) => {
-      debug('registering endpoint', conf);
-    };
-
-    debug('target prototype', target.prototype);
+    debug('conf injected', target.prototype[ServiceSym]);
 
 
   };

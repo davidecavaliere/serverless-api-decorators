@@ -1,6 +1,6 @@
 import * as Debug from 'debug';
 import { ServiceSym, EndpointsSym } from './decorators';
-
+import * as path from 'path';
 //
 const d = Debug('sls-api-dec');
 
@@ -18,43 +18,38 @@ class Serverless {
 
 
     try {
-      const serviceInstance = require('../../../.webpack');
-      debug('serviceInstances: ', serviceInstance);
+      const serviceInstances = require('../../../.webpack').services;
+      debug('serviceInstances: ', serviceInstances);
 
-      const services = serviceInstance.services;
+      for (let serviceName of Object.keys(serviceInstances)) {
+        debug('serviceName: ', serviceName);
+        const service = serviceInstances[serviceName];
+        debug('service:', service[ServiceSym]);
 
-      debug('services', services);
-      // debug(userService);
-
-
-      for (const service of Object.keys(services)) {
-        debug('parsing service', service);
-        const proto = services[service];
-        debug('prototype', proto);
-        const serviceDescription = proto[ServiceSym];
+        const serviceDescription = service[ServiceSym];
         debug('serviceDescription', serviceDescription);
-        const endpoints = proto[EndpointsSym];
+        const endpoints = service[EndpointsSym];
         debug('endpoints', endpoints);
 
         debug('adding functions');
 
-        // for (let endpoint of endpoints) {
-        //   debug('registering endpoint', endpoint);
-        //   const name = endpoint.name;
-        //   const funcName = endpoint.functionName;
-        //   // functions[name] = {
-          //   handler: `index.services.${serviceDescription.name}.${funcName}`,
-          //   events: [
-          //     {
-          //       http:  {
-          //         path: path.join(serviceDescription.path,endpoint.path),
-          //         method: endpoint.method,
-          //         integration: endpoint.integration
-          //       }
-          //     }
-          //   ]
-          // }
-        // }
+        for (let endpoint of endpoints) {
+          debug('registering endpoint', endpoint);
+          const name = endpoint.name;
+          const funcName = endpoint.functionName;
+          functions[name] = {
+            handler: `index.services.${serviceDescription.name}.${funcName}`,
+            events: [
+              {
+                http:  {
+                  path: path.join(serviceDescription.path,endpoint.path),
+                  method: endpoint.method,
+                  integration: endpoint.integration
+                }
+              }
+            ]
+          }
+        }
 
 
       }
@@ -63,36 +58,6 @@ class Serverless {
       console.log('error', e);
     }
 
-
-    // for (let service of services) {
-    //   let options = services[service];
-    //   debug('service: ', service, options);
-    //
-    //
-    //
-    //
-    //
-    //   // let className = services['className'];
-    //   // debug('className', className);
-    //   //
-    //   // let instance = new className();
-    //   // debug('got instance', instance);
-    //
-    //   // if (functions.hasOwnProperty())
-    //
-    //
-    // }
-
-
-
-
-
-    // for (let func in functions) {
-    //   debug('function name:', func);
-    //   debug('function handler', functions[func].handler);
-    //   debug('function events', functions[func].events);
-    //
-    // }
   }
 }
 
