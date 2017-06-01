@@ -2,6 +2,9 @@ import * as Debug from 'debug';
 
 const debug = Debug('annotations');
 
+export const ServiceSym = Symbol('Service');
+export const EndpointsSym = Symbol('Endpoints');
+
 export interface ServiceConfiguration {
   name: string;
   path: string;
@@ -17,7 +20,7 @@ export const Service = (config: Object) => {
     debug('Running class annotation');
     debug('adding config', Object.keys(config));
 
-    target.prototype.service = config;
+    target.prototype[ServiceSym] = config;
 
     debug('adding handler for register endpoint', this);
 
@@ -48,14 +51,14 @@ export const Endpoint = (config: Object) => {
 
     const targetProto = target.constructor.prototype;
 
-    if (!targetProto.endpoints) {
-      targetProto['endpoints'] = [];
+    if (!targetProto[EndpointsSym]) {
+      targetProto[EndpointsSym] = [];
     }
 
     // setting real function name
     (config as any)['functionName'] = key
 
-    target.constructor.prototype.endpoints.push(config);
+    target.constructor.prototype[EndpointsSym].push(config);
 
     debug('endpoint defined', target.constructor.prototype);
 
