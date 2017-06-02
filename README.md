@@ -46,14 +46,6 @@ set up to run with typescript
 ```yaml
 plugins:
   - serverless-webpack
-  # also add the sls-api-decorators plugin
-  # this will avoi you to manually set the functions in serverless.yaml
-  - sls-api-decorators
-
-custom:
-  # this will be the same output folder set up in webpack.config.js
-  artifactsFolder: .webpack
-
 ```
 create webpack.config.js
 
@@ -112,6 +104,20 @@ add npm scripts
 #### Install sls-api-decorators
 
 ```npm i -S sls-api-decorators```
+
+Edit you plugins section and add typescript output folder.
+
+```yaml
+plugins:
+  - serverless-webpack
+  # this will dynamically set the functions in serverless.yaml
+  - sls-api-decorators
+
+custom:
+  # this will be the same output folder set up in webpack.config.js
+  artifactsFolder: .webpack
+
+```
 
 create `api/user/user.service.ts`
 
