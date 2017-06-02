@@ -21,7 +21,7 @@ class Serverless {
       const serviceInstances = require('../../../.webpack').services;
       debug('serviceInstances: ', serviceInstances);
 
-      for (let serviceName of Object.keys(serviceInstances)) {
+      for (const serviceName of Object.keys(serviceInstances)) {
         debug('serviceName: ', serviceName);
         const service = serviceInstances[serviceName];
         debug('service:', service[ServiceSym]);
@@ -33,7 +33,7 @@ class Serverless {
 
         debug('adding functions');
 
-        for (let endpoint of endpoints) {
+        for (const endpoint of endpoints) {
           debug('registering endpoint', endpoint);
           const name = endpoint.name;
           const funcName = endpoint.functionName;
@@ -42,7 +42,7 @@ class Serverless {
             events: [
               {
                 http:  {
-                  path: path.join(serviceDescription.path,endpoint.path),
+                  path: path.join(serviceDescription.path, endpoint.path),
                   method: endpoint.method,
                   integration: endpoint.integration
                 }
