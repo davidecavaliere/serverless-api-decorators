@@ -2,8 +2,8 @@ import * as Debug from 'debug';
 
 const debug = Debug('annotations');
 
-export const ServiceSym = 'Service';
-export const EndpointsSym = 'Endpoints';
+export const ServiceSym = '__service__';
+export const EndpointsSym = '__endpoints__';
 
 export interface ServiceConfiguration {
   name: string;
