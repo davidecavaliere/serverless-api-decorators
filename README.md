@@ -49,6 +49,11 @@ plugins:
   # also add the sls-api-decorators plugin
   # this will avoi you to manually set the functions in serverless.yaml
   - sls-api-decorators
+
+custom:
+  # this will be the same output folder set up in webpack.config.js
+  artifactsFolder: .webpack
+
 ```
 create webpack.config.js
 
