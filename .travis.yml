@@ -6,3 +6,9 @@ script:
   - npm run test  # run mocha unit tests with coverage
 after_script:
   - 'cat coverage/lcov.info | ./node_modules/.bin/coveralls' # sends the coverage report to coveralls
+deploy:
+  provider: npm
+  email: cavaliere.davide@gmail.com
+  api_key: $NPM_TOKEN
+  on:
+    tags: true
