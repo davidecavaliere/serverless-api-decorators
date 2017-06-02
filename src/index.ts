@@ -12,13 +12,18 @@ class Serverless {
     // debug('serverless', serverless.pluginManager);
 
     const services = serverless.service.custom.services;
+    const artifactsPath = serverless.service.custom.artifactsFolder;
+    debug('articafacts folder', artifactsPath);
+    debug('cwd', __dirname);
 
+    const servicePath = serverless.config.servicePath;
     const functions = serverless.service.functions;
     // debug('functions: ', functions);
 
 
     try {
-      const serviceInstances = require('../../../.webpack').services;
+
+      const serviceInstances = require(path.join(servicePath, artifactsPath)).services;
       debug('serviceInstances: ', serviceInstances);
 
       for (const serviceName of Object.keys(serviceInstances)) {
