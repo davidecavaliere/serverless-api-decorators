@@ -1,15 +1,18 @@
 import * as Debug from 'debug';
+import { registerSingleton } from './di';
 
 const debug = Debug('annotations');
 
 export const EndpointSymbol = '__service__';
 export const LambdaSymbol = '__endpoints__';
 
+
 export interface ServiceConfiguration {
   name: string;
   path: string;
   xOrigin: boolean;
-};
+}
+;
 
 export const Endpoint = (config: Object) => {
 
@@ -23,6 +26,8 @@ export const Endpoint = (config: Object) => {
     debug('conf injected', target.prototype[EndpointSymbol]);
 
 
+    registerSingleton(target);
+
   };
 }
 
@@ -31,7 +36,7 @@ export const Lambda = (config: Object) => {
   debug('Creating function annotatiion');
   debug(config);
 
-  return function(target: any, key: string, descriptor: PropertyDescriptor) {
+  return function (target: any, key: string, descriptor: PropertyDescriptor) {
     // let functName = target;
 
     debug('function name:', key);
@@ -96,7 +101,7 @@ export const Lambda = (config: Object) => {
           // TODO: need to get enviroment info
 
           // reject(e);
-          resolve({message : e.toString()});
+          resolve({message: e.toString()});
         }
       });
 
