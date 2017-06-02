@@ -1,11 +1,10 @@
+import index = require('../src/index');
+import * as chai from 'chai';
+import * as mocha from 'mocha';
 
-import index = require("../src/index");
-import * as chai from "chai";
+import * as Debug from 'debug';
+import { Service, Endpoint, ServiceSym, EndpointsSym } from '../src/decorators';
 
-import * as Debug  from 'debug';
-import { Service, Endpoint, ServiceSym } from '../src/decorators';
-
-import * as Reflect from 'reflect-metadata';
 
 const d = Debug('test');
 
@@ -15,7 +14,14 @@ const d = Debug('test');
 })
 class TestService {
   constructor() {
-    d('initing test service')
+    // d('initing test service')
+  }
+
+  @Endpoint({
+    test: 'test'
+  })
+  public testMethod() {
+    d('running testMethod', this);
   }
 }
 
@@ -23,18 +29,18 @@ class TestService {
 
 const expect = chai.expect;
 
-describe("index", () => {
-  it("should provide Greeter", () => {
+describe('index', () => {
+  it('should provide Greeter', () => {
 
 
     const service = new TestService();
 
+    const serviceDef = (service as any)[ServiceSym];
+    const endpointsDef = (service as any)[EndpointsSym];
 
+    expect(serviceDef).to.be.eql({ test: 'test'}, 'should match provided config');
 
-    // d('Service', (service as any)[ServiceSym]);
+    expect(endpointsDef).to.be.eql([{ functionName: 'testMethod', test: 'test' }]);
 
-
-
-    expect(index).to.not.be.undefined;
   });
 });
