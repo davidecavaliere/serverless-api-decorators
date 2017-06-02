@@ -1,4 +1,5 @@
 # Serverless api decorators
+[![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 [![Build Status](https://travis-ci.org/davidecavaliere/serverless-api-decorators.svg?branch=master)](https://travis-ci.org/davidecavaliere/serverless-api-decorators)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
