@@ -1,6 +1,6 @@
 {
   "name": "sls-api-decorators",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "serveless plugin to write lambda functions in typescript making use of IoC technics to reduce coding effort",
   "license": "MIT",
   "repository": "http://github.com/davidecavaliere/serverless-api-decorators",
@@ -20,7 +20,8 @@
     "test": "npm run build && mocha --compilers ts:ts-node/register --recursive 'test/**/*-spec.ts'",
     "coverage": "nyc --include='src/**/*.ts' --reporter=text --reporter=html --reporter=lcov mocha --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
     "watch": "npm run build -- --watch",
-    "watch:test": "npm run test -- --watch"
+    "watch:test": "npm run test -- --watch",
+    "release": "standard-version"
   },
   "dependencies": {
     "debug": "^2.6.8"
@@ -41,6 +42,7 @@
     "nyc": "^10.0.0",
     "rimraf": "^2.0.0",
     "source-map-support": "^0.4.15",
+    "standard-version": "^4.0.0",
     "ts-node": "^3.0.0",
     "tslint": "^5.0.0",
     "typescript": "^2.0.0",
