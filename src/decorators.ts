@@ -2,8 +2,8 @@ import * as Debug from 'debug';
 
 const debug = Debug('annotations');
 
-export const ServiceSym = '__service__';
-export const EndpointsSym = '__endpoints__';
+export const EndpointSymbol = '__service__';
+export const LambdaSymbol = '__endpoints__';
 
 export interface ServiceConfiguration {
   name: string;
@@ -11,23 +11,23 @@ export interface ServiceConfiguration {
   xOrigin: boolean;
 };
 
-export const Service = (config: Object) => {
+export const Endpoint = (config: Object) => {
 
 
   debug('Creating class annotation');
   return (target: any) => {
     debug('Running class annotation');
 
-    target.prototype[ServiceSym] = config;
+    target.prototype[EndpointSymbol] = config;
 
-    debug('conf injected', target.prototype[ServiceSym]);
+    debug('conf injected', target.prototype[EndpointSymbol]);
 
 
   };
 }
 
 
-export const Endpoint = (config: Object) => {
+export const Lambda = (config: Object) => {
   debug('Creating function annotatiion');
   debug(config);
 
@@ -43,14 +43,14 @@ export const Endpoint = (config: Object) => {
 
     const targetProto = target.constructor.prototype;
 
-    if (!targetProto[EndpointsSym]) {
-      targetProto[EndpointsSym] = [];
+    if (!targetProto[LambdaSymbol]) {
+      targetProto[LambdaSymbol] = [];
     }
 
     // setting real function name
     (config as any)['functionName'] = key
 
-    target.constructor.prototype[EndpointsSym].push(config);
+    target.constructor.prototype[LambdaSymbol].push(config);
 
     debug('endpoint defined', target.constructor.prototype);
 

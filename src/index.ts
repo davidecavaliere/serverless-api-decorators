@@ -1,5 +1,5 @@
 import * as Debug from 'debug';
-import { ServiceSym, EndpointsSym } from './decorators';
+import { EndpointSymbol, LambdaSymbol } from './decorators';
 import * as path from 'path';
 //
 const d = Debug('sls-api-dec');
@@ -29,11 +29,11 @@ class Serverless {
       for (const serviceName of Object.keys(serviceInstances)) {
         debug('serviceName: ', serviceName);
         const service = serviceInstances[serviceName];
-        debug('service:', service[ServiceSym]);
+        debug('service:', service[EndpointSymbol]);
 
-        const serviceDescription = service[ServiceSym];
+        const serviceDescription = service[EndpointSymbol];
         debug('serviceDescription', serviceDescription);
-        const endpoints = service[EndpointsSym];
+        const endpoints = service[LambdaSymbol];
         debug('endpoints', endpoints);
 
         debug('adding functions');
