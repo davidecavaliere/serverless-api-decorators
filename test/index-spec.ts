@@ -5,6 +5,7 @@ import * as mocha from 'mocha';
 import * as Debug from 'debug';
 import { Service, Endpoint, EndpointSymbol, LambdaSymbol } from '../src/decorators';
 
+import * as DI from '../src/di';
 
 const d = Debug('test');
 
@@ -13,8 +14,13 @@ const d = Debug('test');
   test: 'test'
 })
 class TestService {
+
+  public static count: number = 0;
+
   constructor() {
     // d('initing test service')
+    TestService.count++;
+    d('number of instances', TestService.count);
   }
 
   @Endpoint({
@@ -32,8 +38,11 @@ const expect = chai.expect;
 describe('index', () => {
   it('should provide Greeter', () => {
 
+    d('DI:', DI);
 
-    const service = new TestService();
+
+
+    const service = DI.getSingleton('TestService');
 
     const serviceDef = (service as any)[EndpointSymbol];
     const endpointsDef = (service as any)[LambdaSymbol];

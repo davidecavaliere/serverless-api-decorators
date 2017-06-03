@@ -7,11 +7,21 @@ const singletons: Object = {};
 export const registerSingleton = (target: any) => {
   d('registering singleton:', target);
 
-  const className = target.constructor.name;
+  const className = target.name;
+  d('classname: ', className);
 
-  (singletons as any)[className] = new (target as any)();
+
+  (singletons as any)[className] = new target();
 
   d('singletons', singletons);
+}
+
+export const getSingleton = (name: string) => {
+
+  d('retrieving singleton:', singletons);
+
+  return (singletons as any)[name];
+
 }
 
 // export class DIManager {
