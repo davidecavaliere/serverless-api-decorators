@@ -11,10 +11,10 @@ It basically allow the developer to define a set of aws lambda functions as meth
 Loading the sls-api-decorators plugin will automatically generate the lambda definitions in serverless.yaml
 
 ```typescript
-@Service()
+@Endpoint()
 export class MyService {
 
-  @Endpoint()
+  @Lambda()
   public sayHello(event) {
     return { message : 'Hello there'}
   }
@@ -139,7 +139,7 @@ import  * as Debug  from "debug";
    const debug = Debug('bazooka');
 
 
-   @Service({
+   @Endpoint({
      // name of the service (not in the serverless meaning of service)
      // will be used in the future for di purpose
      name: 'userService',
@@ -152,7 +152,7 @@ import  * as Debug  from "debug";
    class UserService {
      constructor() { }
 
-     @Endpoint({
+     @Lambda({
        // name to reference this method in the serverless ecosystem
        // i.e.: to be used with invoke command
        name: 'hello',
@@ -172,7 +172,7 @@ import  * as Debug  from "debug";
 
      }
 
-     @Endpoint({
+     @Lambda({
        name: 'error',
        path: 'error',
        method: 'get',
@@ -198,27 +198,12 @@ _this should be replaced in future versions by a DI system_
 // api/index.ts
 
 
+import * as DI from 'sls-api-decorators/lib/di';
+// still need to explicitly import services we want to export
+import { UserService } from './user/user.service';
 
-import  * as Debug  from 'debug';
+let services = DI.getServices();
 
-let debug = Debug('entry-ts');
-
-import {UserService} from './user/user.service';
-
-debug('UserSErvice', UserService.prototype);
-
-const serviceDefinition = (UserService.prototype as any)['service'];
-
-debug('serviceDef', serviceDefinition);
-
-let services = {};
-
-const userService = new UserService();
-const serviceName = serviceDefinition.name;
-
-services[serviceName] = userService;
-
-debug('services:', services);
 
 export { services };
 ```
