@@ -10,8 +10,12 @@ export const registerSingleton = (target: any) => {
   const className = target.name;
   d('classname: ', className);
 
+  const serviceName = target.prototype['__service__'].name;
 
-  (singletons as any)[className] = new target();
+  d('serviceName: ', serviceName);
+
+
+  (singletons as any)[serviceName] = new target();
 
   d('singletons', singletons);
 }
@@ -22,6 +26,10 @@ export const getSingleton = (name: string) => {
 
   return (singletons as any)[name];
 
+}
+
+export const getServices = () => {
+  return singletons;
 }
 
 // export class DIManager {
