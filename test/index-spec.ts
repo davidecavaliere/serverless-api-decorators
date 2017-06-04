@@ -11,7 +11,7 @@ const d = Debug('test');
 
 
 @Endpoint({
-  test: 'test'
+  name: 'testService'
 })
 class TestService {
 
@@ -42,12 +42,12 @@ describe('index', () => {
 
 
 
-    const service = DI.getSingleton('TestService');
+    const service = DI.getSingleton('testService');
 
     const serviceDef = (service as any)[EndpointSymbol];
     const endpointsDef = (service as any)[LambdaSymbol];
 
-    expect(serviceDef).to.be.eql({ test: 'test'}, 'should match provided config');
+    expect(serviceDef).to.be.eql({ name: 'testService'}, 'should match provided config');
 
     expect(endpointsDef).to.be.eql([{ functionName: 'testMethod', test: 'test' }]);
 
