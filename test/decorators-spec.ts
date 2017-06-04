@@ -3,12 +3,12 @@ import * as chai from 'chai';
 import * as mocha from 'mocha';
 
 import * as Debug from 'debug';
-import { Service, Endpoint, EndpointSymbol, LambdaSymbol } from '../src/decorators';
+import { Endpoint, Lambda, EndpointSymbol, LambdaSymbol } from '../src/decorators';
 
 
 const d = Debug('test');
 
-@Service({
+@Endpoint({
   test: 'test'
 })
 class TestService {
@@ -16,7 +16,7 @@ class TestService {
     // d('initing test service')
   }
 
-  @Endpoint({
+  @Lambda({
     test: 'test'
   })
   public testMethod() {

@@ -3,14 +3,14 @@ import * as chai from 'chai';
 import * as mocha from 'mocha';
 
 import * as Debug from 'debug';
-import { Service, Endpoint, EndpointSymbol, LambdaSymbol } from '../src/decorators';
+import { Endpoint, Lambda, EndpointSymbol, LambdaSymbol } from '../src/decorators';
 
 import * as DI from '../src/di';
 
 const d = Debug('test');
 
 
-@Service({
+@Endpoint({
   test: 'test'
 })
 class TestService {
@@ -23,7 +23,7 @@ class TestService {
     d('number of instances', TestService.count);
   }
 
-  @Endpoint({
+  @Lambda({
     test: 'test'
   })
   public testMethod() {
