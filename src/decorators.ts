@@ -76,18 +76,34 @@ export const Lambda = (config: Object) => {
 
     const originalFunction = target[key];
 
+
     return target[key] = (...args: any[]) => {
       debug('hijacked function');
+      debug('original function:', originalFunction);
+      let _args = annotate(originalFunction);
+      debug('function arguments', _args);
+
+
       debug('event', args[0]);
       const event = args[0];
       debug('context', args[1]);
-      // debug('cb', args[2])
+      debug('cb', args[2])
       const cb = args[2];
       // function should only handle the event and resolve, reject of a promise
       const promise = new Promise((resolve, reject) => {
         debug('promising sanitation');
         try {
-          const response = originalFunction.call(target, event);
+          let newArgs = _args.map((arg: any) => {
+            debug('parsing arg for injection:', arg);
+            if (arg === 'event') {
+              return event;
+            }
+            return event.path[arg];
+          });
+
+          debug('new arguments:', newArgs);
+
+          const response = originalFunction.apply(target, newArgs);
           resolve(response);
         } catch (e) {
           debug('error calling handler', e.toString());
@@ -119,4 +135,38 @@ export const Lambda = (config: Object) => {
       })
     }
   }
+}
+
+var FN_ARGS = /^[a-zA_Z]\s*[^\(]*\(\s*([^\)]*)\)/m;
+var FN_ARG_SPLIT = /,/;
+var FN_ARG = /^\s*(_?)(.+?)\1\s*$/;
+var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+function annotate(fn: any) {
+  var $inject: string[] = [],
+      fnText,
+      argDecl,
+      last;
+
+  debug('extracting arguments from fn:', fn);
+
+  if (typeof fn == 'function') {
+    debug('function is a function!');
+    fnText = fn.toString().replace(STRIP_COMMENTS, '');
+    debug('fnText', fnText);
+    argDecl = fnText.match(FN_ARGS);
+    debug('argDecl', argDecl);
+    argDecl[1].split(FN_ARG_SPLIT).forEach(function(arg: any){
+      arg.replace(FN_ARG, function(all: any, underscore: any, name: any){
+        $inject.push(name);
+      });
+    });
+
+  } else if (false) {
+    // last = fn.length - 1;
+    // assertArgFn(fn[last], 'fn')
+    // $inject = fn.slice(0, last);
+  } else {
+    // assertArgFn(fn, 'fn', true);
+  }
+  return $inject;
 }
