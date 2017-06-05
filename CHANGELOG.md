@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.3.0...v0.4.0) (2017-06-05)
+
+
+### Bug Fixes
+
+* **index-spec:** fixing test ([5ec0281](https://github.com/davidecavaliere/serverless-api-decorators/commit/5ec0281))
+
+
+### Features
+
+* **application:** introduting [@Api](https://github.com/Api) annotation to bootstrapp application ([8306173](https://github.com/davidecavaliere/serverless-api-decorators/commit/8306173))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.2.6...v0.3.0) (2017-06-04)
 

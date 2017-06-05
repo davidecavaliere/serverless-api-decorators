@@ -1,6 +1,6 @@
 {
   "name": "sls-api-decorators",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "serveless plugin to write lambda functions in typescript making use of IoC technics to reduce coding effort",
   "license": "MIT",
   "repository": "http://github.com/davidecavaliere/serverless-api-decorators",
@@ -24,6 +24,8 @@
     "release": "standard-version"
   },
   "dependencies": {
+    "aws-sdk": "^2.62.0",
+    "aws-sdk-typescript": "0.0.3",
     "debug": "^2.6.8"
   },
   "peerDependencies": {
