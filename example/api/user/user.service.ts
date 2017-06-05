@@ -1,6 +1,6 @@
 import  * as Debug  from "debug";
 import {Endpoint, Lambda} from "sls-api-decorators/lib/decorators";
-import { Factory } from 'sls-api-decorators/lib/models';
+// import { Factory } from 'sls-api-decorators/lib/models';
 // import { User } from './user.model';
 
 const debug = Debug('bazooka');
@@ -23,23 +23,54 @@ class UserService {
   constructor() {
 
     debug('Initing UserService');
-    debug('User Factory', this.User);
+    // debug('User Factory', this.User);
 
 
   }
 
   @Lambda({
-    name: 'hello',
+    name: 'list',
     path: '/',
     method: 'get',
     integration: 'lambda'
   })
-  public welcome(event) {
+  public list(event, offset, limit) {
     debug('Running welcome');
 
-    return { message: 'Go Serverless Webpack (Typescript) v1.0! Your function xecuted successfully!' };
+    return { message: 'Go Serverless Webpack (Typescript) v1.0! Your function xecuted successfully!', event: event };
 
   }
+
+  @Lambda({
+    name: 'getById',
+    path: '/{id}',
+    method: 'get',
+    integration: 'lambda'
+  })
+  public getById(id) {
+    debug('Running get by id:', id);
+
+    return {
+      id: 'abc',
+      name: 'dcavaliere',
+      email: 'cavaliere.davide@gmail.com'
+     };
+
+  }
+
+  @Lambda({
+    name: 'getSubscriptions',
+    path: '/{id}/subscriptions',
+    method: 'get',
+    integration: 'lambda'
+  })
+  public getSubscriptions(id) {
+    debug('Running get by id:', id);
+
+    return ['Playboy', 'Penthouse'];
+
+  }
+
 
   @Lambda({
     name: 'error',
