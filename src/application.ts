@@ -12,7 +12,7 @@ export const Api = (config: any) => {
 
 
     target.prototype['DI'] = DI;
-    target.prototype['factories'] = DI.getFactories();
+    // target.prototype['factories'] = DI.getFactories();
     target.prototype['services'] = DI.getServices();
 
 
