@@ -23,7 +23,7 @@ class Serverless {
 
     try {
 
-      const serviceInstances = require(path.join(servicePath, artifactsPath)).services;
+      const serviceInstances = require(path.join(servicePath, artifactsPath)).app.services;
       debug('serviceInstances: ', serviceInstances);
 
       for (const serviceName of Object.keys(serviceInstances)) {
@@ -43,7 +43,7 @@ class Serverless {
           const name = endpoint.name;
           const funcName = endpoint.functionName;
           functions[name] = {
-            handler: `index.services.${serviceDescription.name}.${funcName}`,
+            handler: `index.app.services.${serviceDescription.name}.${funcName}`,
             events: [
               {
                 http:  {

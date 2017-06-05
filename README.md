@@ -197,15 +197,24 @@ _this should be replaced in future versions by a DI system_
 ```typescript
 // api/index.ts
 
-
-import * as DI from 'sls-api-decorators/lib/di';
-// still need to explicitly import services we want to export
+import { Api } from 'sls-api-decorators/lib/application';
 import { UserService } from './user/user.service';
+import { User } from './user/user.model';
 
-let services = DI.getServices();
+
+@Api({
+  // used for DI purposes
+  name : 'app'
+  // need to define factories and servises
+  factories: [User],
+  services: [UserService]
+})
+class App { }
 
 
-export { services };
+const app = new App();
+
+export { app };
 ```
 
 run `npm start` sit back and start coding :)

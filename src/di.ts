@@ -14,7 +14,7 @@ export const registerSingleton = (target: any) => {
 
   d('serviceName: ', serviceName);
 
-
+  // should implement lazy loading
   (singletons as any)[serviceName] = new target();
 
   d('singletons', singletons);
