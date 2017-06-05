@@ -172,6 +172,25 @@ import  * as Debug  from "debug";
 
      }
 
+     // demostrate use of path params and arguments injection
+     // arguments being injected from event.path
+     @Lambda({
+       name: 'getById',
+       path: '/{id}',
+       method: 'get',
+       integration: 'lambda'
+     })
+     public getById(id) {
+       debug('Running get by id:', id);
+
+       return {
+         id: 'abc',
+         name: 'dcavaliere',
+         email: 'cavaliere.davide@gmail.com'
+        };
+
+     }
+
      @Lambda({
        name: 'error',
        path: 'error',
