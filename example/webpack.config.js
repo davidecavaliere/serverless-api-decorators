@@ -2,13 +2,19 @@
 
 var path = require('path');
 var webpack = require('webpack');
+var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-  entry: './api/index.ts',
+  entry:
+  // './handler.ts',
+  {
+    api: './api/index.ts',
+    handler: './handler.ts'
+  },
   output: {
     libraryTarget: 'commonjs',
-    path: path.join(__dirname, '.webpack'),
-    filename: 'index.js'
+    path: path.join(__dirname, 'lib'),
+    filename: '[name].js'
   },
   target: 'node',
   module: {
@@ -19,4 +25,5 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.tsx', '.jsx', '']
   },
+  // externals: [nodeExternals()]
 };

@@ -18,11 +18,12 @@ service: sls-api-decorators # NOTE: update this with your service name
 # frameworkVersion: "=X.X.X"
 
 plugins:
-  - serverless-webpack
-  - sls-api-decorators
+  # - serverless-webpack
+  # - sls-api-decorators
 
 custom:
-  artifactsFolder: .webpack
+  artifactsFolder: api
+  # webpackIncludeModules: true
 
 provider:
   name: aws
@@ -53,33 +54,34 @@ provider:
 #    variable1: value1
 
 # you can add packaging information here
-#package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
-#  exclude:
+package:
+#   include:
+# #    - include-me.js
+#     - lib/**
+  exclude:
+    - node_modules/
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
-# functions:
-#   hello:
-#     handler: index.services.userService.welcome
-#
-# #    The following are a few example events you can configure
-# #    NOTE: Please make sure to change your handler code to work with those events
-# #    Check the event documentation for details
-#     events:
-#       - http:
-#           path: users
-#           method: get
-#           integration: lambda
-#   error:
-#     handler: index.services.userService.error
-#     events:
-#       - http:
-#           path: users/error
-#           method: get
-#           integration: lambda
+functions:
+  hello:
+    handler:  lib/index.error
+
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+    events:
+      - http:
+          path: hello
+          method: get
+          integration: lambda
+  error:
+    handler: lib/index.list
+    events:
+      - http:
+          path: users/error
+          method: get
+          integration: lambda
 
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

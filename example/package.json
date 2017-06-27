@@ -11,9 +11,12 @@
     "tslint": "^5.4.2",
     "typescript": "^2.3.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "webpack-node-externals": "^1.6.0"
+  },
   "scripts": {
-    "start": "npm run webpack",
+    "start": "nodemon --ignore handler.ts --ignore ./lib --exec 'npm run webpack'",
     "webpack": "sls webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
