@@ -27,7 +27,7 @@ plugins:
   - sls-api-decorators
 
 custom:
-  artifactsFolder: api
+  artifactsFolder: lib/api
 
 # you can overwrite defaults here
 #  stage: dev
@@ -64,26 +64,26 @@ package:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
-functions:
-  hello:
-    handler: lib/handler.hello
-    events:
-      - http:
-          path: test/echo
-          method: get
-          integration: lambda
-
-  error:
-    handler: lib/handler.error
-
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-    events:
-      - http:
-          path: test/hello
-          method: get
-          integration: lambda
+# functions:
+#   hello:
+#     handler: lib/handler.hello
+#     events:
+#       - http:
+#           path: test/echo
+#           method: get
+#           integration: lambda
+#
+#   error:
+#     handler: lib/handler.error
+#
+# #    The following are a few example events you can configure
+# #    NOTE: Please make sure to change your handler code to work with those events
+# #    Check the event documentation for details
+#     events:
+#       - http:
+#           path: test/hello
+#           method: get
+#           integration: lambda
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
