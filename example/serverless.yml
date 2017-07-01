@@ -11,23 +11,23 @@
 #
 # Happy Coding!
 
-service: sls-api-decorators # NOTE: update this with your service name
+service: sls-api-decorators-example-2 # NOTE: update this with your service name
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
-plugins:
-  # - serverless-webpack
-  # - sls-api-decorators
-
-custom:
-  artifactsFolder: api
-  # webpackIncludeModules: true
-
 provider:
   name: aws
   runtime: nodejs6.10
+
+
+plugins:
+  # - serverless-webpack
+  - sls-api-decorators
+
+custom:
+  apiFolder: api
 
 # you can overwrite defaults here
 #  stage: dev
@@ -55,34 +55,35 @@ provider:
 
 # you can add packaging information here
 package:
-#   include:
-# #    - include-me.js
-#     - lib/**
-  exclude:
-    - node_modules/
+ include:
+  # - include-me.js
+  # include sls-api-decorators module which is npm linked in development
+  - ../lib/**
+ exclude:
+  - node_modules/**
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
 functions:
   hello:
-    handler:  lib/index.error
+    handler: lib/handler.hello
+    events:
+      - http:
+          path: test/echo
+          method: get
+          integration: lambda
+
+  error:
+    handler: lib/handler.error
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
     events:
       - http:
-          path: hello
+          path: test/hello
           method: get
           integration: lambda
-  error:
-    handler: lib/index.list
-    events:
-      - http:
-          path: users/error
-          method: get
-          integration: lambda
-
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic

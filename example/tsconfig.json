@@ -8,11 +8,11 @@
     "declaration": true,
     "outDir": "lib"
   },
-  "include": [
-    "api"
-  ],
   "exclude": [
+    "api/user",
+    "lib",
     "node_modules"
+
   ],
   "compileOnSave": true
 }

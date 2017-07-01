@@ -37,7 +37,11 @@ class UserService {
   public list(event, offset, limit) {
     debug('Running welcome');
 
-    return { message: 'Go Serverless Webpack (Typescript) v1.0! Your function xecuted successfully!', event: event };
+    return [{
+      name: 'davide cavaliere',
+      email: 'cavaliere.davide@gmail.com',
+      provider: 'googleplus'
+    }];
 
   }
 
