@@ -98,7 +98,11 @@ export const Lambda = (config: Object) => {
             if (arg === 'event') {
               return event;
             }
-            return event.path[arg];
+            if (event && event.path && event.path.hasOwnProperty(arg)) {
+              return event.path[arg];
+            }
+
+            return undefined;
           });
 
           debug('new arguments:', newArgs);

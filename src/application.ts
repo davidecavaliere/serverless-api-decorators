@@ -16,6 +16,7 @@ export const Api = (config: any) => {
     target.prototype['services'] = DI.getServices();
 
 
+    d('app prototype:', target.prototype);
     // instantiate Factories and Services
 
   }
