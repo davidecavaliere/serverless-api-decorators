@@ -4,30 +4,37 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
-sls-api-decorator is a PoC on using typescript decorators to decorate classes that rapresents a service (in serverless idiom) and their methods that will map to endpoints. It supports only aws lambdas.
+This project is mean to simplify and make more elegant aws lambda development in typescript and automatically handle the serverless configuration file.
 
-It basically allow the developer to define a set of aws lambda functions as methods of the same class.
+This is still under heavy development.  
 
-Loading the sls-api-decorators plugin will automatically generate the lambda definitions in serverless.yaml
+Features:
+  - define your service as a class annotating it to provide configuration
+  - define lambdas as methods of a class and annotate them to provide configuration
+  - lambdas are automatically wrapped into a promise
+  - path and query parameters are automatically injected into the lambda
+  - support for parameters validation
+  - no need to change serverless.yml
 
+At a glance:
 ```typescript
-@Endpoint()
+@Endpoint(
+  // define configuration here
+)
 export class MyService {
 
-  @Lambda()
+  @Lambda(
+    // define configuration
+  )
   public sayHello(event) {
     return { message : 'Hello there'}
   }
 }
 ```
 
-`sayHello` function is wrapped in a promise and will automatically handle thrown errors.
+Look into the example folder for a working example
 
 # How to use
-<!--
-For a quick start clone [http://github.com/davidecavaliere/sls-api-decorator-example](http://github.com/davidecavaliere/sls-api-decorator-example)
-
-check out git's history with `git log -p --reverse`. -->
 
 #### Create a serverless project
 
@@ -35,73 +42,7 @@ check out git's history with `git log -p --reverse`. -->
 
 - specify your service name and comment out `functions` section
 
-####Install serverless-webpack plugin
-
-- `npm i -S serverless-webpack`
-
-set up to run with typescript
-
-```
- npm i -S typescript ts-node
-```
-
-```yaml
-plugins:
-  - serverless-webpack
-```
-create webpack.config.js
-
-```js
-// webpack.config.js
-
-var path = require('path');
-var webpack = require('webpack');
-
-module.exports = {
-  entry: './api/index.ts',
-  output: {
-    libraryTarget: 'commonjs',
-    path: path.join(__dirname, '.webpack'),
-    filename: 'index.js'
-  },
-  target: 'node',
-  module: {
-    loaders: [
-      { test: /\.ts(x?)$/, loader: 'ts-loader' }
-    ]
-  },
-  resolve: {
-    extensions: ['.ts', '.js', '.tsx', '.jsx', '']
-  },
-};
-```
-
-create tsconfig.json
-
-```js
-{
-  "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "sourceMap": true,
-    "declaration": true
-  },
-  "exclude": [
-    "node_modules"
-  ]
-}
-```
-
-add npm scripts
-
-```json
-  "scripts": {
-    "start": "npm run webpack",
-    "webpack": "sls webpack serve'"
-  }
-```
+### TBD. instruction on how to set up for ts lambdas
 
 #### Install sls-api-decorators
 
@@ -111,13 +52,12 @@ Edit you plugins section and add typescript output folder.
 
 ```yaml
 plugins:
-  - serverless-webpack
   # this will dynamically set the functions in serverless.yaml
   - sls-api-decorators
 
 custom:
-  # this will be the same output folder set up in webpack.config.js
-  artifactsFolder: .webpack
+  # this will be your ts output folder
+  artifactsFolder: lib
 
 ```
 
@@ -131,109 +71,108 @@ The latter being to demostrate error throwing.
 
 ```typescript
 // user.service.ts
-
-import  * as Debug  from "debug";
-   import {Service, Endpoint} from "sls-api-decorators";
+import {Service, Endpoint} from "sls-api-decorators";
 
 
-   const debug = Debug('bazooka');
+@Endpoint({
+  // name of the service (not in the serverless meaning of service)
+  // will be used in the future for di purpose
+  name: 'userService',
+  // this will rapresent the base path for this service
+  // i.e.: http://localhost:8000/users
+  path: 'users',
+  // Allow xOrigin request [TBD]
+  xOrigin: true
+})
+class UserService {
+  constructor() { }
 
+  @Lambda({
+    // name to reference this method in the serverless ecosystem
+    // i.e.: to be used with invoke command
+    name: 'hello',
+    // sub-path for this endpoint
+    // i.e.: http://localhost:8000/users/
+    path: '/',
+    // method to which this function should listen
+    // i.e.: 'get' or ['get', 'post'] [TBD]
+    method: 'get',
+    // this is just required from serverless-webpack plugin
+    integration: 'lambda'
+  })
+  public welcome(event) {
+    debug('Running welcome');
 
-   @Endpoint({
-     // name of the service (not in the serverless meaning of service)
-     // will be used in the future for di purpose
-     name: 'userService',
-     // this will rapresent the base path for this service
-     // i.e.: http://localhost:8000/users
-     path: 'users',
-     // Allow xOrigin request [TBD]
-     xOrigin: true
-   })
-   class UserService {
-     constructor() { }
+    return { message: 'Go Serverless Webpack (Typescript) v1.0! Your function executed successfully!', event };
 
-     @Lambda({
-       // name to reference this method in the serverless ecosystem
-       // i.e.: to be used with invoke command
-       name: 'hello',
-       // sub-path for this endpoint
-       // i.e.: http://localhost:8000/users/
-       path: '/',
-       // method to which this function should listen
-       // i.e.: 'get' or ['get', 'post'] [TBD]
-       method: 'get',
-       // this is just required from serverless-webpack plugin
-       integration: 'lambda'
-     })
-     public welcome(event) {
-       debug('Running welcome');
+  }
 
-       return { message: 'Go Serverless Webpack (Typescript) v1.0! Your function executed successfully!', event };
+  // demostrate use of path params and arguments injection
+  // arguments being injected from event.path
+  @Lambda({
+    name: 'getById',
+    path: '/{id}',
+    method: 'get',
+    integration: 'lambda'
+  })
+  public getById(id) {
+    debug('Running get by id:', id);
 
-     }
+    return {
+      id: 'abc',
+      name: 'dcavaliere',
+      email: 'cavaliere.davide@gmail.com'
+     };
 
-     // demostrate use of path params and arguments injection
-     // arguments being injected from event.path 
-     @Lambda({
-       name: 'getById',
-       path: '/{id}',
-       method: 'get',
-       integration: 'lambda'
-     })
-     public getById(id) {
-       debug('Running get by id:', id);
+  }
 
-       return {
-         id: 'abc',
-         name: 'dcavaliere',
-         email: 'cavaliere.davide@gmail.com'
-        };
+  @Lambda({
+    name: 'error',
+    path: 'error',
+    method: 'get',
+    integration: 'lambda'
+  })
+  public error(event) {
+    debug('throwing an error');
+    // throwing an error will reject the lambda cb
+    throw new Error('something weird just happened');
+  }
+}
 
-     }
-
-     @Lambda({
-       name: 'error',
-       path: 'error',
-       method: 'get',
-       integration: 'lambda'
-     })
-     public error(event) {
-       debug('throwing an error');
-       // throwing an error will reject the lambda cb
-       throw new Error('something weird just happened');
-     }
-   }
-
-   export { UserService };
+export { UserService };
 ```
 
-create `api/index.ts`
+create `api/app.ts`
 
 The following will expose the service to be used by serverless
 
 _this should be replaced in future versions by a DI system_
 
 ```typescript
-// api/index.ts
-
+// api/app.ts
 import { Api } from 'sls-api-decorators/lib/application';
 import { UserService } from './user/user.service';
 import { User } from './user/user.model';
 
-
 @Api({
   // used for DI purposes
-  name : 'app'
+  name : 'app',
   // need to define factories and servises
   factories: [User],
   services: [UserService]
 })
-class App { }
+export class App {
 
+  public services: any;
+  public factories: any;
 
-const app = new App();
+  constructor() {}
 
-export { app };
+}
 ```
 
-run `npm start` sit back and start coding :)
+run `tsc -w &` now you can call `sls invoke local -f hello`
+
+or deploy with `sls deploy`
+
+Please note if you use the example you need to provide your own service name.
