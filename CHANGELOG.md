@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.3.2...v0.4.0) (2017-07-01)
+
+
+### Bug Fixes
+
+* getting rid of webpack ([719bfbf](https://github.com/davidecavaliere/serverless-api-decorators/commit/719bfbf))
+
+
+### Features
+
+* **decorators:** enabling arguments injection in [@Lambda](https://github.com/Lambda) methods ([f8c878b](https://github.com/davidecavaliere/serverless-api-decorators/commit/f8c878b))
+* adding automatic handler generation ([b2e6a63](https://github.com/davidecavaliere/serverless-api-decorators/commit/b2e6a63))
+
+
+
 <a name="0.3.3"></a>
 ## [0.3.3](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.3.2...v0.3.3) (2017-06-05)
 
