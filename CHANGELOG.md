@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.4"></a>
+## [0.4.4](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.4.3...v0.4.4) (2017-07-01)
+
+
+### Bug Fixes
+
+* **sls-plugin:** handler will be in lib folder ([cda403f](https://github.com/davidecavaliere/serverless-api-decorators/commit/cda403f))
+
+
+
 <a name="0.4.3"></a>
 ## [0.4.3](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.4.2...v0.4.3) (2017-07-01)
 
