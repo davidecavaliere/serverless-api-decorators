@@ -20,52 +20,27 @@ class Serverless {
       }
     });
 
-    const handlerjs = `
+    let handlerjs = `
 import { App } from './api/app';
 const app = new App();
-
-console.log(app);
-console.log('services', app.services);
-
-export const error = app.services.userService.error;
-
-export const hello = app.services.userService.list;
     `
 
     const servicePath = serverless.config.servicePath;
     debug('servicePath:', servicePath);
-    const sourceFile = ast.addSourceFileFromText(path.join(servicePath, 'handler.ts'), handlerjs);
 
-    sourceFile.saveSync();
 
     const services = serverless.service.custom.services;
-    const artifactsPath = serverless.service.custom.apiFolder;
+    const artifactsPath = serverless.service.custom.artifactsFolder;
     debug('articafacts folder', artifactsPath);
     debug('cwd', __dirname);
 
     const functions = serverless.service.functions;
-    // debug('functions: ', functions);
 
     try {
       const req = path.join(servicePath, artifactsPath);
       debug('requiring: ', req);
 
-    //  const property = result.getFile("TestFile.ts")
-    //      .getClass("MyClass")                            // get first by name
-    //      .getProperty(p => p.defaultExpression != null); // or first by what matches
-    //
-    //  console.log(property.name);                   // myNumberProperty
-    //  console.log(property.type.text);              // number
-    //  console.log(property.defaultExpression.text); // 253
-    //  console.log(property.isReadonly);             // true
-
-     // or access the arrays directly
-    //  const myMethod = result.files[0].classes[0].methods[0];
-
-    //  console.log(myMethod.name); // myMethod
-
-    // const serviceInstances = require(req);
-      const serviceInstances: any = {};
+      const serviceInstances: any = require(req).services;
       debug('serviceInstances: ', serviceInstances);
 
       for (const serviceName of Object.keys(serviceInstances)) {
@@ -84,8 +59,14 @@ export const hello = app.services.userService.list;
           debug('registering endpoint', endpoint);
           const name = endpoint.name;
           const funcName = endpoint.functionName;
+
+
+          handlerjs += `
+export const ${funcName} = app.services.${serviceDescription.name}.${funcName};
+          `
+
           functions[name] = {
-            handler: `index.services.${serviceDescription.name}.${funcName}`,
+            handler: `handler.${funcName}`,
             events: [
               {
                 http:  {
@@ -96,12 +77,19 @@ export const hello = app.services.userService.list;
               }
             ]
           }
-        }
 
+        }
 
       }
 
-      debug('final configuration', functions);
+      const sourceFile = ast.addSourceFileFromText(path.join(servicePath, 'handler.ts'), handlerjs);
+
+      sourceFile.saveSync();
+
+      debug('handler.ts saved');
+
+      debug('final configuration');
+      debug(functions);
 
     } catch (e) {
       console.log('error', e);
