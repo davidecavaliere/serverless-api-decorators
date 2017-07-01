@@ -10,10 +10,31 @@ import * as ts from "typescript";
 
 const debug = Debug('sls-plugin');
 
+const d = Debug('auto-conf');
+
 class Serverless {
+  public hooks: any = {};
+
   constructor(serverless: any, options: any) {
     // debug('serverless', serverless.pluginManager);
     debug('initing plugin');
+
+    debug('hooks');
+
+    debug(serverless.hooks);
+    // define sls hooks
+    this.hooks = {
+      'before:package:initialize': () => {
+        return new Promise((res, rej) => {
+          setTimeout(() => {
+
+            debug('This runs before packaging');
+            res(true);
+          }, 2000);
+        });
+      }
+    };
+
     const ast = new Ast({
       compilerOptions: {
         target: ts.ScriptTarget.ES3
@@ -38,25 +59,25 @@ const app = new App();
 
     try {
       const req = path.join(servicePath, artifactsPath);
-      debug('requiring: ', req);
+      // debug('requiring: ', req);
 
       const serviceInstances: any = require(req).services;
-      debug('serviceInstances: ', serviceInstances);
+      // debug('serviceInstances: ', serviceInstances);
 
       for (const serviceName of Object.keys(serviceInstances)) {
-        debug('serviceName: ', serviceName);
+        // debug('serviceName: ', serviceName);
         const service = serviceInstances[serviceName];
-        debug('service:', service[EndpointSymbol]);
+        // debug('service:', service[EndpointSymbol]);
 
         const serviceDescription = service[EndpointSymbol];
-        debug('serviceDescription', serviceDescription);
+        // debug('serviceDescription', serviceDescription);
         const endpoints = service[LambdaSymbol];
-        debug('endpoints', endpoints);
+        // debug('endpoints', endpoints);
 
-        debug('adding functions');
+        // debug('adding functions');
 
         for (const endpoint of endpoints) {
-          debug('registering endpoint', endpoint);
+          // debug('registering endpoint', endpoint);
           const name = endpoint.name;
           const funcName = endpoint.functionName;
 
