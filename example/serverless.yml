@@ -27,7 +27,7 @@ plugins:
   - sls-api-decorators
 
 custom:
-  apiFolder: api
+  artifactsFolder: api
 
 # you can overwrite defaults here
 #  stage: dev
@@ -58,9 +58,9 @@ package:
  include:
   # - include-me.js
   # include sls-api-decorators module which is npm linked in development
-  - ../lib/**
+  # - ../lib/**
  exclude:
-  - node_modules/**
+  # - node_modules/**
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
