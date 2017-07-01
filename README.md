@@ -173,7 +173,7 @@ import  * as Debug  from "debug";
      }
 
      // demostrate use of path params and arguments injection
-     // arguments being injected from event.path
+     // arguments being injected from event.path 
      @Lambda({
        name: 'getById',
        path: '/{id}',
