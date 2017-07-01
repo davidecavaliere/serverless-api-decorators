@@ -87,7 +87,7 @@ export const ${funcName} = app.services.${serviceDescription.name}.${funcName};
           `
 
           functions[name] = {
-            handler: `handler.${funcName}`,
+            handler: `lib/handler.${funcName}`,
             events: [
               {
                 http:  {
@@ -109,7 +109,7 @@ export const ${funcName} = app.services.${serviceDescription.name}.${funcName};
 
       debug('handler.ts saved');
 
-      debug('final configuration');
+      debug('final configuration: functions list');
       debug(functions);
 
     } catch (e) {
