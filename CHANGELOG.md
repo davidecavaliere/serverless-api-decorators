@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.3"></a>
+## [0.4.3](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.4.2...v0.4.3) (2017-07-01)
+
+
+### Bug Fixes
+
+* **sls-plugin:** adding timeout so the auto generated handlerjs is compiled before packaging starts ([0e685da](https://github.com/davidecavaliere/serverless-api-decorators/commit/0e685da))
+
+
+
 <a name="0.4.2"></a>
 ## [0.4.2](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.4.1...v0.4.2) (2017-07-01)
 
