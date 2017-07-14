@@ -18,7 +18,5 @@ export class User {
   public email: string;
 
 
-  constructor() {
-
-  }
+  constructor() { }
 }

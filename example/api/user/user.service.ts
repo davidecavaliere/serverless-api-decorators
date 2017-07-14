@@ -5,9 +5,6 @@ import {Endpoint, Lambda} from "sls-api-decorators/lib/decorators";
 
 const debug = Debug('bazooka');
 
-
-
-
 @Endpoint({
   name: 'userService',
   path: 'users',
