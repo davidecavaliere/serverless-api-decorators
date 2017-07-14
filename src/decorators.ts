@@ -42,7 +42,6 @@ export const Lambda = (config: Object) => {
     debug('function name:', key);
 
     debug('Running function annotation');
-    // debug('target space:', functName);
     debug('-----------------parent proto------------');
     debug(Object.getOwnPropertyNames(target.constructor.prototype));
 
@@ -59,19 +58,7 @@ export const Lambda = (config: Object) => {
 
     debug('endpoint defined', target.constructor.prototype);
 
-    // debug('target constructor: ', target.constructor);
-    // debug('keys:', Object.keys(target));
-    // debug('key', key);
-    // debug('descriptor', descriptor);
 
-    // debug('config added', Object.keys(config));
-
-    // Object.defineProperty(target, (config as any)['name'] + '-config', {
-    //   value: config,
-    //   writable: true,
-    //   enumerable: true,
-    //   configurable: true
-    // });
 
 
     const originalFunction = target[key];
@@ -141,15 +128,15 @@ export const Lambda = (config: Object) => {
   }
 }
 
-var FN_ARGS = /^[a-zA_Z]\s*[^\(]*\(\s*([^\)]*)\)/m;
-var FN_ARG_SPLIT = /,/;
-var FN_ARG = /^\s*(_?)(.+?)\1\s*$/;
-var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+const FN_ARGS = /^[a-zA_Z]\s*[^\(]*\(\s*([^\)]*)\)/m;
+const FN_ARG_SPLIT = /,/;
+const FN_ARG = /^\s*(_?)(.+?)\1\s*$/;
+const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 function annotate(fn: any) {
-  var $inject: string[] = [],
-      fnText,
-      argDecl,
-      last;
+  const $inject: string[] = [];
+  let fnText;
+  let argDecl;
+  let last;
 
   debug('extracting arguments from fn:', fn);
 
