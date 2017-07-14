@@ -83,11 +83,11 @@ const app = new App();
 
 
           handlerjs += `
-export const ${funcName} = app.services.${serviceDescription.name}.${funcName};
+export const ${serviceDescription.name}_${funcName} = app.services.${serviceDescription.name}.${funcName};
           `
 
-          functions[name] = {
-            handler: `lib/handler.${funcName}`,
+          functions[`${serviceDescription.name}_${funcName}`] = {
+            handler: `lib/handler.${serviceDescription.name}_${funcName}`,
             events: [
               {
                 http:  {
