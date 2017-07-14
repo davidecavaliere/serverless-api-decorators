@@ -1,5 +1,6 @@
 import { Api } from 'sls-api-decorators/lib/application';
 import { UserService } from './user/user.service';
+import { StoryService } from './story/story.service';
 import { User } from './user/user.model';
 
 import  * as Debug  from 'debug';
@@ -11,7 +12,7 @@ let debug = Debug('app');
   name : 'app',
   // need to define factories and servises
   factories: [User],
-  services: [UserService]
+  services: [UserService, StoryService]
 })
 export class App {
 
