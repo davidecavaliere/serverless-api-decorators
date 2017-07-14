@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.4.5...v0.5.0) (2017-07-14)
+
+
+### Features
+
+* **sls-plugin:** scoping functions name to allow multiple services definition ([41f2555](https://github.com/davidecavaliere/serverless-api-decorators/commit/41f2555))
+
+
+
 <a name="0.4.5"></a>
 ## [0.4.5](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.4.4...v0.4.5) (2017-07-01)
 
