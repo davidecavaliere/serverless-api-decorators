@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.5.0...v0.6.1) (2017-07-27)
+
+
+### Features
+
+* automatic ts compilation hooked on before:package and before:invoke:local ([7a93146](https://github.com/davidecavaliere/serverless-api-decorators/commit/7a93146))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.5.0...v0.6.0) (2017-07-27)
 
