@@ -13,6 +13,5 @@
     "lib",
     "node_modules"
 
-  ],
-  "compileOnSave": true
+  ]
 }

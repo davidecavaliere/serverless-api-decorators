@@ -24,7 +24,9 @@
     "release": "standard-version"
   },
   "dependencies": {
-    "@types/aws-lambda": "0.0.14"
+    "@types/aws-lambda": "0.0.14",
+    "node-typescript-compiler": "^1.1.1",
+    "ts-simple-ast": "^0.38.0"
   },
   "peerDependencies": {},
   "devDependencies": {
@@ -41,7 +43,6 @@
     "source-map-support": "^0.4.15",
     "standard-version": "^4.0.0",
     "ts-node": "^3.0.0",
-    "ts-simple-ast": "^0.38.0",
     "tslint": "^5.0.0",
     "typescript": "^2.0.0",
     "typings": "^2.1.1"
