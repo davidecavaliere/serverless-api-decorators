@@ -1,7 +1,8 @@
 import * as Debug from 'debug';
-import { registerSingleton } from './di';
+import { registerSingleton, getSingleton } from './di';
 
 const debug = Debug('annotations');
+const d = Debug('respect-this');
 
 export const EndpointSymbol = '__service__';
 export const LambdaSymbol = '__endpoints__';
@@ -39,6 +40,9 @@ export const Lambda = (config: Object) => {
   return function (target: any, key: string, descriptor: PropertyDescriptor) {
     // let functName = target;
 
+
+    debug('-------------------descriptor--------------------');
+    debug(descriptor);
     debug('function name:', key);
 
     debug('Running function annotation');
@@ -70,6 +74,11 @@ export const Lambda = (config: Object) => {
       let _args = annotate(originalFunction);
       debug('function arguments', _args);
 
+      d('getting singleton for service:', target['__service__'].name);
+
+      const lexicalThis = getSingleton(target['__service__'].name);
+
+      d('singleton is available', lexicalThis);
 
       debug('event', args[0]);
       const event = args[0];
@@ -94,7 +103,8 @@ export const Lambda = (config: Object) => {
 
           debug('new arguments:', newArgs);
 
-          const response = originalFunction.apply(target, newArgs);
+          debug('context is:', target.constructor);
+          const response = originalFunction.apply(lexicalThis, newArgs);
           resolve(response);
         } catch (e) {
           debug('error calling handler', e.toString());
