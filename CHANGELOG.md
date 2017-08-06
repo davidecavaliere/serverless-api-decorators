@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.6"></a>
+## [0.6.6](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.6.5...v0.6.6) (2017-08-06)
+
+
+### Bug Fixes
+
+* function should be scoped by service name to avoid duplicated cloudwatch groupLogName ([933a196](https://github.com/davidecavaliere/serverless-api-decorators/commit/933a196))
+
+
+
 <a name="0.6.5"></a>
 ## [0.6.5](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.6.4...v0.6.5) (2017-08-06)
 
