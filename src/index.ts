@@ -27,7 +27,8 @@ class Serverless {
     const servicePath = serverless.config.servicePath;
     debug('servicePath:', servicePath);
 
-
+    const awsService = serverless.service.service;
+    debug('awsService name', awsService);
 
     const services = serverless.service.custom.services;
     const artifactsPath = serverless.service.custom.artifactsFolder;
@@ -73,7 +74,7 @@ class Serverless {
     const ast = new Ast({
       compilerOptions: {
         out: `${servicePath}/${artifactsPath}`,
-        target: ts.ScriptTarget.ES3
+        target: ts.ScriptTarget.ES5
       }
     });
 
@@ -171,7 +172,7 @@ const app = new App();
             handlerjs += `
   export const ${serviceDescription.name}_${funcName} = app.services.${serviceDescription.name}.${funcName};
             `
-            const functionName = `${serviceDescription.name}${funcName}`;
+            const functionName = `${awsService}${serviceDescription.name}${funcName}`;
             serverless.cli.log(`configuring function: ${functionName}`);
 
             const endpointPath = path.join(serviceDescription.path, endpoint.path);
@@ -188,12 +189,11 @@ const app = new App();
                     cors: true
                   }
                 },
-                // {
-                //   cloudwatchLog: {
-                //     logGroup: `${serviceDescription.name}`
-                //     //`${serviceDescription.name}_${funcName}`
-                //   }
-                // }
+                {
+                  cloudwatchLog: {
+                    logGroup: `${awsService}${functionName}`
+                  }
+                }
               ]
             }
 
