@@ -32,7 +32,7 @@ class Serverless {
     const services = serverless.service.custom.services;
     const artifactsPath = serverless.service.custom.artifactsFolder;
     const apiFolder = serverless.service.custom.apiFolder;
-    debug('articafacts folder', artifactsPath);
+    debug('articafacts folder', artifactsPath, apiFolder);
     debug('cwd', __dirname);
 
     const functions = serverless.service.functions;
@@ -138,11 +138,14 @@ const app = new App();
 
       try {
         serverless.cli.log('writing handler.ts');
-        const req = path.join(servicePath, artifactsPath, apiFolder);
+        const req = path.join(servicePath, artifactsPath);
         // debug('requiring: ', req);
 
         const serviceInstances: any = require(req).services;
         // debug('serviceInstances: ', serviceInstances);
+
+        // 5th of august 2017 incurring in the following bug: https://github.com/serverless/serverless/issues/2614
+        // adding random prefix as a workaround
 
         for (const serviceName of Object.keys(serviceInstances)) {
           // debug('serviceName: ', serviceName);
@@ -158,6 +161,8 @@ const app = new App();
           serverless.cli.log(`injecting configuration for service: ${serviceName}`);
 
           for (const endpoint of endpoints) {
+            let prefix = Math.random().toString(36).substring(21);
+
             // debug('registering endpoint', endpoint);
             const name = endpoint.name;
             const funcName = endpoint.functionName;
@@ -166,15 +171,27 @@ const app = new App();
             handlerjs += `
   export const ${serviceDescription.name}_${funcName} = app.services.${serviceDescription.name}.${funcName};
             `
+            const functionName = `${serviceDescription.name}${funcName}`;
+            serverless.cli.log(`configuring function: ${functionName}`);
 
-            functions[`${serviceDescription.name}_${funcName}`] = {
+            const endpointPath = path.join(serviceDescription.path, endpoint.path);
+            serverless.cli.log(`endpoint: ${endpointPath}`);
+            functions[functionName] = {
               handler: `lib/handler.${serviceDescription.name}_${funcName}`,
+              name: functionName,
               events: [
                 {
                   http:  {
-                    path: path.join(serviceDescription.path, endpoint.path),
+                    path: endpointPath,
                     method: endpoint.method,
-                    integration: endpoint.integration
+                    integration: endpoint.integration,
+                    cors: true
+                  }
+                },
+                {
+                  cloudwatchLog: {
+                    logGroup: `${serviceDescription.name}`
+                    //`${serviceDescription.name}_${funcName}`
                   }
                 }
               ]
