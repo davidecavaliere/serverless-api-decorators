@@ -189,11 +189,11 @@ const app = new App();
                     cors: true
                   }
                 },
-                {
-                  cloudwatchLog: {
-                    logGroup: `${awsService}${functionName}`
-                  }
-                }
+                // {
+                //   cloudwatchLog: {
+                //     logGroup: `${awsService}${functionName}`
+                //   }
+                // }
               ]
             }
 
