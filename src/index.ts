@@ -188,12 +188,12 @@ const app = new App();
                     cors: true
                   }
                 },
-                {
-                  cloudwatchLog: {
-                    logGroup: `${serviceDescription.name}`
-                    //`${serviceDescription.name}_${funcName}`
-                  }
-                }
+                // {
+                //   cloudwatchLog: {
+                //     logGroup: `${serviceDescription.name}`
+                //     //`${serviceDescription.name}_${funcName}`
+                //   }
+                // }
               ]
             }
 
