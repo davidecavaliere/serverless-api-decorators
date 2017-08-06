@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.7"></a>
+## [0.6.7](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.6.6...v0.6.7) (2017-08-06)
+
+
+### Bug Fixes
+
+* avoid setting logGroup name ([8dccf9a](https://github.com/davidecavaliere/serverless-api-decorators/commit/8dccf9a))
+
+
+
 <a name="0.6.6"></a>
 ## [0.6.6](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.6.5...v0.6.6) (2017-08-06)
 
