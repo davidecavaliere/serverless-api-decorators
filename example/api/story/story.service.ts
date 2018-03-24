@@ -13,7 +13,7 @@ class StoryService {
 
   constructor() {
 
-    debug('Initing StoryService');
+    debug('Initing StoryEndpoing');
     // debug('User Factory', this.User);
 
 

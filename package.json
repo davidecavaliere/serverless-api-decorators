@@ -17,7 +17,7 @@
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
     "build": "npm run clean && npm run lint && echo Using TypeScript && tsc --version && tsc --pretty",
-    "test": "npm run build && mocha --compilers ts:ts-node/register --recursive 'test/**/*-spec.ts'",
+    "test": "npm run build && mocha --compilers ts:ts-node/register --recursive 'test/**/*.spec.ts'",
     "coverage": "nyc --include='src/**/*.ts' --reporter=text --reporter=html --reporter=lcov mocha --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
     "watch": "npm run build -- --watch",
     "watch:test": "npm run test -- --watch",
@@ -26,6 +26,8 @@
   "dependencies": {
     "@types/aws-lambda": "0.0.14",
     "node-typescript-compiler": "^1.1.1",
+    "reflect-metadata": "^0.1.12",
+    "rxjs": "^5.5.7",
     "ts-simple-ast": "^0.38.0"
   },
   "peerDependencies": {},

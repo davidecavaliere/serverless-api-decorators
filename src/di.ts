@@ -32,6 +32,7 @@ export const getServices = () => {
   return singletons;
 }
 
+
 // export class DIManager {
 //
 //   private singletons: Object = {};

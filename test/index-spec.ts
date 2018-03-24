@@ -1,9 +1,7 @@
-import index = require('../src/index');
 import * as chai from 'chai';
-import * as mocha from 'mocha';
 
 import * as Debug from 'debug';
-import { Endpoint, Lambda, EndpointSymbol, LambdaSymbol } from '../src/decorators';
+import { Endpoint, EndpointSymbol, Lambda, LambdaSymbol } from '../src/decorators';
 
 import * as DI from '../src/di';
 

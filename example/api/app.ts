@@ -2,9 +2,9 @@ import { Api } from 'sls-api-decorators/lib/application';
 import { UserService } from './user/user.service';
 import { StoryService } from './story/story.service';
 import { User } from './user/user.model';
+import * as Debug from 'debug';
 
-import  * as Debug  from 'debug';
-let debug = Debug('app');
+const debug = Debug('app');
 
 
 @Api({
