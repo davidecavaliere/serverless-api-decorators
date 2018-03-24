@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.8"></a>
+## [0.6.8](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.6.7...v0.6.8) (2018-03-24)
+
+
+
 <a name="0.6.7"></a>
 ## [0.6.7](https://github.com/davidecavaliere/serverless-api-decorators/compare/v0.6.6...v0.6.7) (2017-08-06)
 
