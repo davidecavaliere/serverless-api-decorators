@@ -1,5 +1,5 @@
 {
-  "name": "sls-api-decorators",
+  "name": "@microgamma/serverless-apigator",
   "version": "0.6.10",
   "description": "serveless plugin to write lambda functions in typescript making use of IoC technics to reduce coding effort",
   "license": "MIT",
