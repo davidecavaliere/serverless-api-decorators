@@ -6,3 +6,6 @@ npm-debug.log
 .nyc_output
 lib
 example/handler.ts
+yarn.lock
+example
+yarn-error.log
