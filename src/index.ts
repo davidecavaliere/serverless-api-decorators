@@ -1,110 +1,85 @@
-// import Ast from 'ts-simple-ast';
-// import * as ts from 'typescript';
-
-
+import { getServiceMetadata, getEndpointMetadata} from '@microgamma/apigator';
+import 'reflect-metadata';
 import * as Debug from 'debug';
-import {EndpointSymbol, LambdaSymbol} from "./decorators";
 
-const debug = Debug('sls-plugin');
-const d = Debug('auto-conf');
-
+const debug = Debug('sls-dec:index.ts');
 
 class Serverless {
+
+  private servicePath: string;
+
   public hooks: any = {};
 
-  constructor(serverless: any, options: any) {
-    // debug('serverless', serverless.pluginManager);
 
-    debug('initing plugin');
+  constructor(private serverless: any, private options: any) {
 
-    serverless.cli.log('Compiling api')
-
-    const servicePath = serverless.config.servicePath;
-    debug('servicePath:', servicePath);
+    serverless.cli.log('Parsing Service definition');
+    this.servicePath = serverless.config.servicePath;
+    debug('servicePath:', this.servicePath);
 
     const awsService = serverless.service.service;
     debug('awsService name', awsService);
 
     const services = serverless.service.custom.services;
-    d('pre defined services', services);
+    debug('pre defined services', services);
     const artifactsPath = serverless.service.custom.artifactsFolder;
     const apiFolder = serverless.service.custom.apiFolder;
     debug('articafacts folder', artifactsPath, apiFolder);
-    debug('cwd', __dirname);
 
-    const functions = serverless.service.functions;
-
-
-
-
-    // debug('hooks:', serverless.pluginManager.hooks);
-    // define sls hooks
     this.hooks = {
       'before:package:initialize': () => {
-
-        d('before:package:initialize');
-        const appPath = [servicePath, 'lib', 'api'].join('/');
-
-        const app = require(appPath);
-        d('app is', app.services);
-
-        const serviceInstances: any = app.services;
-        debug('serviceInstances: ', serviceInstances);
-
-        for (const serviceName of Object.keys(serviceInstances)) {
-          const service = serviceInstances[serviceName];
-          debug('service:', service[EndpointSymbol]);
-
-          const serviceDescription = service[EndpointSymbol];
-          debug('serviceDescription', serviceDescription);
-
-          const endpoints = service[LambdaSymbol];
-          debug('endpoints', endpoints);
-
-          debug('adding functions');
-          serverless.cli.log(`injecting configuration for service: ${serviceName}`);
-
-          for (const endpoint of endpoints) {
-            const prefix = Math.random().toString(36).substring(21);
-
-            debug('registering endpoint', endpoint);
-            const name = endpoint.name;
-            const funcName = endpoint.functionName;
-
-            const functionName = `${awsService}${serviceDescription.name}${funcName}`;
-            serverless.cli.log(`configuring function: ${functionName}`);
-
-            const endpointPath = [serviceDescription.path, endpoint.path].join('/');
-            serverless.cli.log(`endpoint: ${endpointPath}`);
-
-            functions[functionName] = {
-              handler: `lib/handler.${serviceDescription.name}_${funcName}`,
-              name: functionName,
-              events: [
-                {
-                  http:  {
-                    path: endpointPath,
-                    method: endpoint.method,
-                    integration: endpoint.integration,
-                    cors: true
-                  }
-                },
-                // {
-                //   cloudwatchLog: {
-                //     logGroup: `${awsService}${functionName}`
-                //   }
-                // }
-              ]
-            }
-
-          }
-        }
+        debug('before:package:initialize');
+        return this.configureFunctions();
       },
 
       'before:invoke:local:invoke': () => {
-        d('before:invoke:local:invoke');
+        debug('before:invoke:local:invoke');
+        return this.configureFunctions();
       }
     };
+  }
+
+  public configureFunctions() {
+
+    return import(`${this.servicePath}/lib/handler`).then((module) => {
+
+      this.serverless.cli.log('Injecting configuration');
+      debug('works', module);
+
+      const service = module;
+
+      debug('metadata', Reflect.getMetadataKeys(service));
+      debug('Service', getServiceMetadata(service));
+      debug('Endpoints', getEndpointMetadata(service));
+
+      const endpoints = getEndpointMetadata(service);
+
+      for (const endpoint of endpoints) {
+        debug('configuring endpoint', endpoint);
+        const functionName = endpoint.name;
+
+        this.serverless.service.functions[endpoint.name] = {
+          handler: `lib/handler.${functionName}`,
+          events: [
+            {
+              http:  {
+                path: endpoint.path,
+                method: endpoint.method,
+                integration: 'lambda',
+                cors: true
+              }
+            }
+          ]
+        }
+
+        debug('functions is');
+        debug(this.serverless.service.functions[endpoint.name]);
+        debug(this.serverless.service.functions[endpoint.name].events);
+      }
+
+      this.serverless.cli.log(`${endpoints.length} endpoints configured`);
+
+    });
   }
 }
 

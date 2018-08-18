@@ -16,37 +16,36 @@
   "scripts": {
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
-    "build": "npm run clean && npm run lint && echo Using TypeScript && tsc --version && tsc --pretty",
+    "build": "npm run clean && npm run lint && echo Using TypeScript && tsc --version && nodemon -w ./src/index.ts --exec tsc --pretty",
     "test": "npm run build && mocha --compilers ts:ts-node/register --recursive 'test/**/*.spec.ts'",
     "coverage": "nyc --include='src/**/*.ts' --reporter=text --reporter=html --reporter=lcov mocha --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
-    "watch": "npm run build -- --watch",
-    "watch:test": "npm run test -- --watch",
+    "watch": "nodemon -w src/index.ts --exec tsc --pretty",
+    "test:watch": "npm run test -- --watch",
     "release": "standard-version"
   },
   "dependencies": {
-    "@types/aws-lambda": "0.0.14",
-    "node-typescript-compiler": "^1.1.1",
-    "reflect-metadata": "^0.1.12",
-    "rxjs": "^5.5.7",
-    "ts-simple-ast": "^0.38.0"
+    "@microgamma/apigator": "^1.2.1",
+    "reflect-metadata": "^0.1.12"
   },
   "peerDependencies": {},
   "devDependencies": {
     "@types/chai": "^3.5.2",
     "@types/debug": "0.0.29",
+    "@types/jasmine": "^2.8.6",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.0",
     "chai": "^3.0.0",
     "coveralls": "^2.0.0",
     "debug": "^2.6.8",
     "mocha": "^3.0.0",
+    "nodemon": "^1.17.5",
     "nyc": "^10.0.0",
     "rimraf": "^2.0.0",
     "source-map-support": "^0.4.15",
     "standard-version": "^4.0.0",
     "ts-node": "^3.0.0",
     "tslint": "^5.0.0",
-    "typescript": "^2.0.0",
+    "typescript": "^2.9.1",
     "typings": "^2.1.1"
   },
   "engines": {

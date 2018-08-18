@@ -73,10 +73,8 @@ package:
  include:
   #  - include-me.js
    - lib/**
-   - api/printer/fonts
  exclude:
   #  - exclude-me.js
-   - api/**
    - handler.ts
    - tsconfig.json
 

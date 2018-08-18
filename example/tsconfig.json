@@ -6,12 +6,10 @@
     "emitDecoratorMetadata": true,
     "sourceMap": true,
     "declaration": true,
-    "outDir": "lib"
+    "outDir": "lib",
+    "types": []
   },
   "exclude": [
-    "api/user",
-    "lib",
-    "node_modules"
-
+    "lib"
   ]
 }

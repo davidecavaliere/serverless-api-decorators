@@ -10,15 +10,13 @@
     "outDir": "./lib",
     "preserveConstEnums": true,
     "removeComments": true,
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "types": []
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "**/*-spec.ts"
+    "**/*spec.ts"
   ]
 }

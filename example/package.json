@@ -6,16 +6,18 @@
   "scripts": {
     "start": "tsc -w",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sls": "sls"
+    "sls": "sls",
+    "watch": "nodemon -w handler.ts --exec 'tsc --pretty && npm run sls -- invoke local -f list'"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "serverless": "^1.19.0",
     "sls-api-decorators": "file:../../sls-api-decorators",
-    "typescript": "^2.4.1"
+    "typescript": "^2.8.1"
   },
   "dependencies": {
-    "debug": "^2.6.8"
+    "debug": "^2.6.8",
+    "nodemon": "^1.17.3"
   }
 }
