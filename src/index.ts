@@ -7,6 +7,10 @@ const debug = Debug('sls-dec:index.ts');
 class Serverless {
 
   private servicePath: string;
+  private artifactsPath: string;
+  private entrypoint: string;
+  private apiFolder: string;
+
 
   public hooks: any = {};
 
@@ -22,9 +26,10 @@ class Serverless {
 
     const services = serverless.service.custom.services;
     debug('pre defined services', services);
-    const artifactsPath = serverless.service.custom.artifactsFolder;
-    const apiFolder = serverless.service.custom.apiFolder;
-    debug('articafacts folder', artifactsPath, apiFolder);
+    this.artifactsPath = serverless.service.custom.artifactsFolder;
+    this.apiFolder = serverless.service.custom.apiFolder;
+    this.entrypoint = serverless.service.custom.entrypoint;
+    debug('entrypoint', this.entrypoint);
 
     this.hooks = {
       'before:package:initialize': () => {
@@ -41,7 +46,11 @@ class Serverless {
 
   public configureFunctions() {
 
-    return import(`${this.servicePath}/lib/handler`).then((module) => {
+    debug('importing module');
+
+    // const module = require(`${this.servicePath}/${this.entrypoint}`);
+    const modulePath = `${this.servicePath}/${this.entrypoint}`;
+    return import(modulePath).then((module) => {
 
       this.serverless.cli.log('Injecting configuration');
       debug('works', module);
@@ -59,7 +68,7 @@ class Serverless {
         const functionName = endpoint.name;
 
         this.serverless.service.functions[endpoint.name] = {
-          handler: `lib/handler.${functionName}`,
+          handler: `${this.entrypoint}.${functionName}`,
           events: [
             {
               http:  {
@@ -79,6 +88,8 @@ class Serverless {
 
       this.serverless.cli.log(`${endpoints.length} endpoints configured`);
 
+    }).catch((err) => {
+      console.error(err);
     });
   }
 }
