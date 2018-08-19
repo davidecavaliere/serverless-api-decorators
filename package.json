@@ -24,10 +24,11 @@
     "release": "standard-version"
   },
   "dependencies": {
-    "@microgamma/apigator": "^1.4.1",
     "reflect-metadata": "^0.1.12"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@microgamma/apigator": "^1.4.1"
+  },
   "devDependencies": {
     "@types/chai": "^3.5.2",
     "@types/debug": "0.0.29",
