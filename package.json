@@ -27,7 +27,7 @@
     "reflect-metadata": "^0.1.12"
   },
   "peerDependencies": {
-    "@microgamma/apigator": "^1.4.1"
+    "@microgamma/apigator": "~1.0"
   },
   "devDependencies": {
     "@types/chai": "^3.5.2",

@@ -1,4 +1,4 @@
-# Serverless api decorators
+# @microgamma/serverless-apigator
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 [![Build Status](https://travis-ci.org/davidecavaliere/serverless-api-decorators.svg?branch=master)](https://travis-ci.org/davidecavaliere/serverless-api-decorators)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
