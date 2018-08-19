@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - '6'
 script:
+  - npm install @microgamma/apigator
   - npm run build  # build
 #  - npm run test  # run mocha unit tests with coverage
 #after_script:
