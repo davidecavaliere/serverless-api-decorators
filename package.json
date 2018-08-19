@@ -23,9 +23,7 @@
     "test:watch": "npm run test -- --watch",
     "release": "standard-version"
   },
-  "dependencies": {
-    "reflect-metadata": "^0.1.12"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "@microgamma/apigator": "~1.0"
   },

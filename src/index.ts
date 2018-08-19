@@ -1,5 +1,4 @@
 import { getServiceMetadata, getEndpointMetadata} from '@microgamma/apigator';
-import 'reflect-metadata';
 import * as Debug from 'debug';
 
 const debug = Debug('sls-dec:index.ts');
