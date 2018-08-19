@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es2017",
     "module": "commonjs",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -10,13 +10,15 @@
     "outDir": "./lib",
     "preserveConstEnums": true,
     "removeComments": true,
-    "types": []
+    "esModuleInterop": true,
+    "types": ["node"],
+    "lib": ["es2017"]
   },
   "include": [
-    "src/**/*"
+    "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
+    "node_modules/**",
     "**/*spec.ts"
   ]
 }
